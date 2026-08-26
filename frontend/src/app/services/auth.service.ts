@@ -13,6 +13,12 @@ export interface LoginResponse {
   sessionExpiresAt: string;
 }
 
+export interface MeResponse {
+  id: string;
+  email: string;
+  role: 'ADMIN' | 'USER';
+}
+
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private readonly apiUrl = `${environment.apiUrl}/auth`;
@@ -26,7 +32,8 @@ export class AuthService {
       { withCredentials: true }
     );
   }
-    refresh(): Observable<LoginResponse> {
+
+  refresh(): Observable<LoginResponse> {
     return this.http.post<LoginResponse>(
       `${this.apiUrl}/refresh`,
       {},
@@ -41,5 +48,10 @@ export class AuthService {
       { withCredentials: true }
     );
   }
-}
 
+  getMe(): Observable<MeResponse> {
+    return this.http.get<MeResponse>(`${this.apiUrl}/me`, {
+      withCredentials: true,
+    });
+  }
+}

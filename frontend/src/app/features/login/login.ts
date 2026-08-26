@@ -1,5 +1,11 @@
-import { Component, signal } from '@angular/core';
-import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
+import { Component, inject, signal } from '@angular/core';
+import {
+  ReactiveFormsModule,
+  FormBuilder,
+  Validators,
+} from '@angular/forms';
+import { Router } from '@angular/router';
+
 import { AuthService } from '../../services/auth.service';
 import { SessionTimerService } from '../../services/session-timer.service';
 
@@ -10,9 +16,10 @@ import { SessionTimerService } from '../../services/session-timer.service';
   styleUrl: './login.css',
 })
 export class Login {
+  private router = inject(Router);
+
   loading = signal(false);
   errorMessage = signal('');
-  successUser = signal<{ email: string; role: string } | null>(null);
 
   form;
 
@@ -49,11 +56,15 @@ export class Login {
     this.authService.login(email!, password!).subscribe({
       next: (response) => {
         this.loading.set(false);
-        this.successUser.set(response.user);
+
         this.sessionTimer.schedule(response.sessionExpiresAt);
+
+        this.router.navigateByUrl('/dashboard');
       },
+
       error: (err) => {
         this.loading.set(false);
+
         this.errorMessage.set(
           err.error?.message || 'No se pudo iniciar sesión. Intenta de nuevo.'
         );

@@ -1,0 +1,386 @@
+/* =========================================================
+   fluw – Dashboard (Parte 2.1)
+   Paleta tomada de la imagen de referencia:
+   - Fondo general:      #9CA894  (verde grisaceo)
+   - Header pastillas:   #D9905A  (naranja terracota)
+   - Encabezado tarjetas:#254D32  (verde bosque oscuro)
+   - Fondo tarjetas:     #F5F0E4  (crema)
+   - Fila ingreso:       #D7E3C9  (verde suave)
+   - Fila gasto:         #F4D9A8  (arena)
+   - Acento positivo:    #6FCF54  (verde)
+   - Acento negativo:    #E14A3B  (rojo)
+   ========================================================= */
+
+:root{
+  --bg-app:        #9CA894;
+  --pill-orange:   #D9905A;
+  --pill-orange-dark: #C97F49;
+  --header-dark:   #23482F;
+  --header-dark-2: #1E3F2A;
+  --card-cream:    #F6F1E5;
+  --card-border:   #E7DFC9;
+  --row-income:    #DCE7CF;
+  --row-expense:   #F5DBA9;
+  --green-accent:  #6FCF54;
+  --green-accent-dark: #4CAF3E;
+  --red-accent:    #E1483A;
+  --text-dark:     #22301F;
+  --text-muted:    #4c5a45;
+  --white:         #ffffff;
+  --radius-card:   18px;
+  --radius-pill:   26px;
+  --shadow-soft:   0 2px 6px rgba(0,0,0,0.08);
+}
+
+*{ box-sizing: border-box; }
+
+body{
+  margin: 0;
+  font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg-app);
+  color: var(--text-dark);
+}
+
+.dashboard-wrapper{
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 16px 20px 32px;
+}
+
+/* ===================== HEADER ===================== */
+.topbar{
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-bottom: 22px;
+}
+
+.brand{
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--card-cream);
+  border-radius: var(--radius-pill);
+  padding: 10px 18px;
+  font-weight: 800;
+  font-size: 1.15rem;
+  color: var(--text-dark);
+  box-shadow: var(--shadow-soft);
+}
+.brand-icon{ color: var(--pill-orange); display:flex; }
+
+.topbar-nav{
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  flex: 1;
+}
+
+.pill{
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: none;
+  border-radius: var(--radius-pill);
+  padding: 12px 20px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  background: var(--pill-orange);
+  color: var(--white);
+  box-shadow: var(--shadow-soft);
+  white-space: nowrap;
+}
+
+.pill-static{
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  line-height: 1.1;
+}
+.pill-label{ font-size: 0.7rem; font-weight: 700; opacity: 0.9; }
+.pill-value{ font-size: 1rem; font-weight: 800; }
+
+.pill-link{ position: relative; }
+.pill-icon{ display: flex; }
+.chevron{ font-weight: 700; margin-left: 2px; }
+
+.pill-active{
+  outline: 3px solid #6C4FE0;
+  outline-offset: 2px;
+}
+
+.topbar-user{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--card-cream);
+  border-radius: var(--radius-pill);
+  padding: 8px 14px;
+  box-shadow: var(--shadow-soft);
+}
+.icon-btn{
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: none;
+  background: var(--pill-orange);
+  color: var(--white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.icon-btn-dark{ background: var(--header-dark); }
+.user-email{ font-size: 0.85rem; font-weight: 600; color: var(--text-dark); }
+
+/* ===================== GRID ===================== */
+.grid{
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+/* Fila 1: Ingresos vista (2 cols) | Grafica (2 cols) */
+.grid > section:nth-child(1){ grid-column: span 2; }
+.grid > section:nth-child(2){ grid-column: span 2; grid-row: span 2; }
+
+/* Fila 2: Gastos vista (2 cols) */
+.grid > section:nth-child(3){ grid-column: span 2; }
+
+/* Fila 3: Total de ahorro | Impuestos a pagar */
+.grid > section:nth-child(4){ grid-column: span 1; }
+.grid > section:nth-child(5){ grid-column: span 1; }
+
+/* Fila 4: Proximos eventos (2) | Calendario (1) | Fondo emergencia (1)  -- ajustado abajo */
+.grid > section:nth-child(6){ grid-column: span 2; }
+.grid > section:nth-child(7){ grid-column: span 1; }
+.grid > section:nth-child(8){ grid-column: span 1; }
+.grid > section:nth-child(9){ grid-column: span 1; }
+
+/* ===================== CARD BASE ===================== */
+.card{
+  background: var(--card-cream);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  box-shadow: var(--shadow-soft);
+  display: flex;
+  flex-direction: column;
+}
+
+.card-header{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
+  color: var(--white);
+}
+.card-header h2{
+  margin: 0;
+  font-size: 1.15rem;
+  font-weight: 800;
+}
+.card-header.dark{ background: var(--header-dark); }
+.card-header.centered{ justify-content: center; text-align: center; }
+.card-header.small h2{ font-size: 0.95rem; }
+
+.menu-btn{
+  background: rgba(255,255,255,0.12);
+  border: none;
+  border-radius: 8px;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--white);
+  cursor: pointer;
+}
+
+/* ===================== LISTAS INGRESOS / GASTOS ===================== */
+.list-items{
+  list-style: none;
+  margin: 0;
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.list-items li{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  border-radius: 14px;
+  padding: 12px 16px;
+  font-weight: 600;
+  font-size: 0.92rem;
+}
+.list-items.income li{ background: var(--row-income); }
+.list-items.expense li{ background: var(--row-expense); }
+
+.list-items .amount{
+  margin-left: auto;
+  margin-right: 10px;
+  font-weight: 700;
+}
+
+.status{
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.status-check{ color: var(--text-dark); }
+.status-x{ color: var(--text-dark); }
+
+/* ===================== GRAFICA ===================== */
+.card-graph{ min-height: 320px; }
+.graph-body{
+  padding: 16px 20px 20px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+.graph-legend{
+  display: flex;
+  gap: 18px;
+  justify-content: center;
+  margin-bottom: 10px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+.legend-item{ display: flex; align-items: center; gap: 6px; }
+.dot{ width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+.dot-green{ background: var(--green-accent); }
+.dot-red{ background: var(--red-accent); }
+
+.graph-chart{
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.graph-axis{
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-size: 0.7rem;
+  color: var(--text-muted);
+}
+.bars{
+  flex: 1;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 22px 4px 6px;
+  border-bottom: 2px solid #cfc9b4;
+}
+.bar-group{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  flex: 1;
+  height: 100%;
+  justify-content: flex-end;
+}
+.bar-pair{
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  height: 100%;
+}
+.bar{
+  width: 12px;
+  border-radius: 3px 3px 0 0;
+}
+.bar-green{ background: var(--green-accent); }
+.bar-red{ background: var(--red-accent); }
+.bar-day{ font-size: 0.68rem; color: var(--text-muted); font-weight: 600; }
+.graph-baseline{ font-size: 0.7rem; color: var(--text-muted); margin-top: 4px; }
+
+/* ===================== STAT CARDS ===================== */
+.stat-card{ min-height: 130px; }
+.stat-body{
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+}
+.stat-value{
+  font-size: 1.6rem;
+  font-weight: 800;
+  padding: 8px 22px;
+  border-radius: 999px;
+}
+.stat-green{ background: var(--green-accent); color: var(--white); }
+.stat-red{ background: var(--red-accent); color: var(--white); }
+.stat-neutral{ background: #E4DEC8; color: var(--text-dark); }
+
+/* ===================== EVENTOS ===================== */
+.events-list{
+  list-style: none;
+  margin: 0;
+  padding: 14px 20px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.events-list li{
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  font-size: 0.9rem;
+  font-weight: 600;
+  border-bottom: 1px solid var(--card-border);
+  padding-bottom: 8px;
+}
+.events-list li:last-child{ border-bottom: none; padding-bottom: 0; }
+.event-date{ color: var(--text-muted); min-width: 90px; }
+.event-desc{ color: var(--text-dark); }
+
+/* ===================== CALENDARIO ===================== */
+.calendar-card{ min-height: 130px; }
+.calendar-icon{
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--pill-orange);
+  padding: 14px;
+}
+
+/* ===================== RESPONSIVE ===================== */
+@media (max-width: 1024px){
+  .grid{ grid-template-columns: repeat(2, 1fr); }
+  .grid > section:nth-child(1){ grid-column: span 2; }
+  .grid > section:nth-child(2){ grid-column: span 2; grid-row: auto; }
+  .grid > section:nth-child(3){ grid-column: span 2; }
+  .grid > section:nth-child(4){ grid-column: span 1; }
+  .grid > section:nth-child(5){ grid-column: span 1; }
+  .grid > section:nth-child(6){ grid-column: span 2; }
+  .grid > section:nth-child(7){ grid-column: span 1; }
+  .grid > section:nth-child(8){ grid-column: span 1; }
+  .grid > section:nth-child(9){ grid-column: span 2; }
+}
+
+@media (max-width: 640px){
+  .topbar{ flex-direction: column; align-items: stretch; }
+  .topbar-nav{ justify-content: center; }
+  .topbar-user{ justify-content: center; }
+
+  .grid{ grid-template-columns: 1fr; }
+  .grid > section{ grid-column: span 1 !important; grid-row: auto !important; }
+
+  .pill{ padding: 10px 14px; font-size: 0.85rem; }
+  .bar{ width: 8px; }
+}
