@@ -1,0 +1,16 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: flow-postgres
+    restart: always
+    environment:
+      POSTGRES_USER: flow_user
+      POSTGRES_PASSWORD: flow_password
+      POSTGRES_DB: flow_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - flow_postgres_data:/var/lib/postgresql/data
+
+volumes:
+  flow_postgres_data:
