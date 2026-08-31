@@ -1,143 +1,741 @@
+/* =========================================================
+   PALETA PRINCIPAL
+   ========================================================= */
+
+:root {
+  --color-green: #2b4832;
+  --color-cream: #f3ebda;
+  --color-gray-green: #9ba393;
+  --color-orange: #da9253;
+  --color-brown-orange: #bd5b2c;
+  --color-beige: #deba95;
+  --color-taupe: #9d866b;
+  --color-turquoise: #44c9c3;
+  --color-white: #ffffff;
+  --color-text: #26352b;
+}
+
+
+/* =========================================================
+   CONTENEDOR PRINCIPAL
+   ========================================================= */
+
 .page {
   min-height: 100vh;
+
   display: grid;
   grid-template-columns: 1fr 1fr;
+
+  background: var(--color-white);
+
+  overflow: hidden;
 }
+
+
+/* =========================================================
+   LADO DE MARCA
+   ========================================================= */
 
 .brand {
   position: relative;
+
   overflow: hidden;
-  background: linear-gradient(135deg, var(--color-navy) 0%, var(--color-navy-dark) 45%, var(--color-blue-deep) 100%);
-  color: var(--color-white);
+
+  min-height: 100vh;
+
   display: flex;
   align-items: center;
   justify-content: center;
+
   padding: 4rem;
+
+  color: var(--color-white);
+
+  background:
+    radial-gradient(
+      circle at 20% 20%,
+      rgba(243, 235, 218, 0.12) 0,
+      transparent 32%
+    ),
+    radial-gradient(
+      circle at 85% 75%,
+      rgba(218, 146, 83, 0.16) 0,
+      transparent 30%
+    ),
+    linear-gradient(
+      145deg,
+      #2b4832 0%,
+      #263f2d 48%,
+      #1e3525 100%
+    );
 }
+
+
+/* =========================================================
+   BURBUJAS
+   ========================================================= */
 
 .bubbles {
   position: absolute;
+
   inset: 0;
+
   z-index: 0;
+
+  overflow: hidden;
+
+  pointer-events: none;
 }
 
 .bubble {
   position: absolute;
-  bottom: -120px;
+
+  bottom: -150px;
+
   border-radius: 50%;
-  background: radial-gradient(circle at 30% 30%, rgba(26, 144, 251, 0.55), rgba(71, 79, 244, 0.15) 70%, transparent 75%);
-  filter: blur(1px);
+
+  background:
+    radial-gradient(
+      circle at 30% 25%,
+      rgba(255, 255, 255, 0.28) 0%,
+      rgba(243, 235, 218, 0.16) 28%,
+      rgba(218, 146, 83, 0.12) 58%,
+      rgba(43, 72, 50, 0.02) 75%
+    );
+
+  border: 1px solid rgba(255, 255, 255, 0.12);
+
+  box-shadow:
+    inset 8px 8px 18px rgba(255, 255, 255, 0.08),
+    inset -10px -10px 22px rgba(0, 0, 0, 0.08),
+    0 10px 30px rgba(0, 0, 0, 0.08);
+
+  filter: blur(0.2px);
+
   animation-name: float-up;
   animation-iteration-count: infinite;
-  animation-timing-function: ease-in;
+  animation-timing-function: ease-in-out;
 }
 
-.b1 { left: 8%;  width: 60px;  height: 60px;  animation-duration: 14s; animation-delay: 0s; }
-.b2 { left: 22%; width: 34px;  height: 34px;  animation-duration: 10s; animation-delay: 2s; }
-.b3 { left: 38%; width: 90px;  height: 90px;  animation-duration: 18s; animation-delay: 1s; }
-.b4 { left: 55%; width: 46px;  height: 46px;  animation-duration: 12s; animation-delay: 4s; }
-.b5 { left: 70%; width: 70px;  height: 70px;  animation-duration: 16s; animation-delay: 3s; }
-.b6 { left: 84%; width: 30px;  height: 30px;  animation-duration: 9s;  animation-delay: 1.5s; }
-.b7 { left: 62%; width: 110px; height: 110px; animation-duration: 20s; animation-delay: 5s; }
+
+/* =========================================================
+   CONFIGURACIÓN DE BURBUJAS
+   ========================================================= */
+
+.b1 {
+  left: 5%;
+  width: 75px;
+  height: 75px;
+
+  animation-duration: 15s;
+  animation-delay: 0s;
+}
+
+.b2 {
+  left: 20%;
+  width: 38px;
+  height: 38px;
+
+  animation-duration: 11s;
+  animation-delay: 2s;
+}
+
+.b3 {
+  left: 34%;
+  width: 120px;
+  height: 120px;
+
+  animation-duration: 19s;
+  animation-delay: 1s;
+}
+
+.b4 {
+  left: 52%;
+  width: 52px;
+  height: 52px;
+
+  animation-duration: 13s;
+  animation-delay: 4s;
+}
+
+.b5 {
+  left: 68%;
+  width: 82px;
+  height: 82px;
+
+  animation-duration: 17s;
+  animation-delay: 3s;
+}
+
+.b6 {
+  left: 84%;
+  width: 34px;
+  height: 34px;
+
+  animation-duration: 10s;
+  animation-delay: 1.5s;
+}
+
+.b7 {
+  left: 61%;
+  width: 145px;
+  height: 145px;
+
+  animation-duration: 22s;
+  animation-delay: 5s;
+}
+
+
+/* =========================================================
+   ANIMACIÓN DE BURBUJAS
+   ========================================================= */
 
 @keyframes float-up {
-  0% { transform: translateY(0) translateX(0); opacity: 0; }
-  10% { opacity: 0.9; }
-  90% { opacity: 0.5; }
-  100% { transform: translateY(-720px) translateX(24px); opacity: 0; }
+  0% {
+    transform: translate3d(0, 0, 0) scale(0.85);
+    opacity: 0;
+  }
+
+  12% {
+    opacity: 0.65;
+  }
+
+  50% {
+    transform: translate3d(20px, -360px, 0) scale(1);
+  }
+
+  88% {
+    opacity: 0.25;
+  }
+
+  100% {
+    transform: translate3d(-15px, -820px, 0) scale(1.08);
+    opacity: 0;
+  }
 }
+
+
+/* =========================================================
+   CONTENIDO DE MARCA
+   ========================================================= */
 
 .brand-content {
   position: relative;
+
   z-index: 1;
+
   display: flex;
   flex-direction: column;
+
   align-items: center;
+
   text-align: center;
-  gap: 1.5rem;
+
+  gap: 1.8rem;
+
+  max-width: 520px;
+
+  animation: fade-in-up 0.8s ease both;
 }
+
+
+/* =========================================================
+   FONDO DEL LOGO
+   ========================================================= */
 
 .logo-backdrop {
-  width: 340px;
-  height: 190px;
-  background: var(--color-white);
-  border-radius: 50%;
+  width: 290px;
+  height: 290px;
+
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 20px 45px rgba(4, 35, 92, 0.35);
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle at 32% 25%,
+      #ffffff 0%,
+      #fdfbf6 45%,
+      #f3ebda 100%
+    );
+
+  border: 8px solid rgba(243, 235, 218, 0.28);
+
+  box-shadow:
+    0 25px 60px rgba(0, 0, 0, 0.22),
+    0 0 0 18px rgba(243, 235, 218, 0.06),
+    inset 0 4px 15px rgba(255, 255, 255, 0.95),
+    inset 0 -10px 25px rgba(157, 134, 107, 0.10);
+
+  animation: pop-in 0.7s ease both;
 }
+
+
+/* =========================================================
+   LOGO
+   ========================================================= */
 
 .logo {
-  width: 240px;
-  height: 130px;
+  width: 215px;
+  height: 145px;
+
   object-fit: contain;
+  object-position: center;
+
+  display: block;
+
+  filter:
+    drop-shadow(
+      0 8px 12px rgba(43, 72, 50, 0.15)
+    );
 }
+
+
+/* =========================================================
+   TEXTO DE MARCA
+   ========================================================= */
 
 .tagline {
-  font-family: var(--font-body);
-  font-size: 1.1rem;
-  color: rgba(255, 255, 255, 0.8);
-  max-width: 26ch;
+  font-family: var(--font-body, Arial, sans-serif);
+
+  font-size: 1.05rem;
+
+  line-height: 1.7;
+
+  color: rgba(255, 255, 255, 0.82);
+
+  max-width: 32ch;
+
+  margin: 0;
+
+  animation: fade-in-up 0.8s ease 0.15s both;
 }
+
+
+/* =========================================================
+   PANEL DE CADUCIDAD
+   ========================================================= */
 
 .panel {
+  position: relative;
+
   display: flex;
+
   align-items: center;
   justify-content: center;
-  padding: 2rem;
+
+  padding: 3rem;
+
   background: var(--color-white);
+
+  overflow: hidden;
 }
 
+
+/* =========================================================
+   DECORACIONES DEL PANEL
+   ========================================================= */
+
+.panel::before {
+  content: "";
+
+  position: absolute;
+
+  width: 280px;
+  height: 280px;
+
+  top: -150px;
+  right: -120px;
+
+  border-radius: 50%;
+
+  background: rgba(243, 235, 218, 0.45);
+
+  pointer-events: none;
+}
+
+.panel::after {
+  content: "";
+
+  position: absolute;
+
+  width: 180px;
+  height: 180px;
+
+  bottom: -100px;
+  left: -80px;
+
+  border-radius: 50%;
+
+  background: rgba(155, 163, 147, 0.12);
+
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   CARD DE CADUCIDAD
+   ========================================================= */
+
 .card {
+  position: relative;
+
+  z-index: 1;
+
   width: 100%;
-  max-width: 400px;
+
+  max-width: 420px;
+
+  padding: 2.5rem;
+
   text-align: center;
-  animation: fade-in-up 0.5s ease both;
+
+  background: rgba(255, 255, 255, 0.96);
+
+  border: 1px solid rgba(155, 163, 147, 0.28);
+
+  border-radius: 28px;
+
+  box-shadow:
+    0 25px 60px rgba(43, 72, 50, 0.10),
+    0 8px 20px rgba(43, 72, 50, 0.05);
+
+  animation: slide-in-right 0.6s ease both;
+}
+
+
+/* =========================================================
+   CABECERA
+   ========================================================= */
+
+.card-header {
+  margin-bottom: 2rem;
 }
 
 .card-header h2 {
-  font-family: var(--font-display);
-  font-size: 1.85rem;
-  margin: 0 0 0.75rem;
-  color: var(--color-navy);
+  font-family: var(--font-display, Arial, sans-serif);
+
+  font-size: clamp(1.7rem, 3vw, 2rem);
+
+  line-height: 1.2;
+
+  margin: 0 0 0.6rem;
+
+  color: var(--color-green);
+
+  letter-spacing: -0.025em;
 }
 
 .card-header p {
-  margin: 0 0 2rem;
-  color: var(--color-slate);
+  margin: 0;
+
+  color: #6f776f;
+
   font-size: 0.95rem;
-  line-height: 1.5;
+
+  line-height: 1.6;
 }
+
+
+/* =========================================================
+   BOTÓN DE REGRESO / ACCIÓN
+   ========================================================= */
 
 button[type='button'] {
   width: 100%;
-  padding: 0.9rem;
+
+  padding: 0.95rem 1.2rem;
+
   border: none;
-  border-radius: 10px;
-  font-family: var(--font-body);
-  font-weight: 600;
+
+  border-radius: 14px;
+
+  font-family: var(--font-body, Arial, sans-serif);
+
+  font-weight: 700;
+
   font-size: 1rem;
+
   color: var(--color-white);
-  background: linear-gradient(135deg, var(--color-blue-light), var(--color-blue-royal));
+
+  background:
+    linear-gradient(
+      135deg,
+      #2b4832 0%,
+      #365e40 100%
+    );
+
   cursor: pointer;
-  box-shadow: 0 8px 20px rgba(23, 11, 158, 0.25);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 0.6rem;
+
+  box-shadow:
+    0 10px 24px rgba(43, 72, 50, 0.22);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.25s ease,
+    background 0.25s ease;
 }
 
 button[type='button']:hover {
   transform: translateY(-2px);
-  box-shadow: 0 12px 28px rgba(23, 11, 158, 0.35);
+
+  background:
+    linear-gradient(
+      135deg,
+      #365e40 0%,
+      #2b4832 100%
+    );
+
+  box-shadow:
+    0 15px 30px rgba(43, 72, 50, 0.28);
 }
+
+button[type='button']:focus-visible {
+  outline: 3px solid rgba(68, 201, 195, 0.35);
+
+  outline-offset: 3px;
+}
+
+button[type='button']:active {
+  transform: translateY(0);
+
+  box-shadow:
+    0 7px 16px rgba(43, 72, 50, 0.20);
+}
+
+
+/* =========================================================
+   ESTADO DE CADUCIDAD
+   ========================================================= */
+
+.card-header h2::before {
+  content: "";
+
+  display: block;
+
+  width: 52px;
+  height: 52px;
+
+  margin: 0 auto 1.2rem;
+
+  border-radius: 50%;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(218, 146, 83, 0.18),
+      rgba(243, 235, 218, 0.65)
+    );
+
+  box-shadow:
+    inset 0 0 0 1px rgba(218, 146, 83, 0.18),
+    0 8px 20px rgba(43, 72, 50, 0.08);
+}
+
+
+/* =========================================================
+   ANIMACIÓN DE ENTRADA
+   ========================================================= */
 
 @keyframes fade-in-up {
-  from { opacity: 0; transform: translateY(14px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+
+    transform: translateY(14px);
+  }
+
+  to {
+    opacity: 1;
+
+    transform: translateY(0);
+  }
 }
 
+@keyframes slide-in-right {
+  from {
+    opacity: 0;
+
+    transform: translateX(24px);
+  }
+
+  to {
+    opacity: 1;
+
+    transform: translateX(0);
+  }
+}
+
+@keyframes pop-in {
+  from {
+    opacity: 0;
+
+    transform: scale(0.82);
+  }
+
+  to {
+    opacity: 1;
+
+    transform: scale(1);
+  }
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
 @media (max-width: 860px) {
-  .page { grid-template-columns: 1fr; }
-  .brand { padding: 2.5rem 2rem; min-height: 260px; }
-  .logo-backdrop { width: 260px; height: 150px; }
-  .logo { width: 180px; height: 100px; }
+
+  .page {
+    grid-template-columns: 1fr;
+
+    min-height: 100vh;
+  }
+
+  .brand {
+    min-height: 360px;
+
+    padding: 3rem 2rem;
+  }
+
+  .logo-backdrop {
+    width: 220px;
+    height: 220px;
+  }
+
+  .logo {
+    width: 165px;
+    height: 125px;
+  }
+
+  .tagline {
+    font-size: 0.95rem;
+  }
+
+  .panel {
+    min-height: auto;
+
+    padding: 3rem 2rem;
+  }
+
+  .card {
+    max-width: 480px;
+  }
+}
+
+
+/* =========================================================
+   TELÉFONO
+   ========================================================= */
+
+@media (max-width: 480px) {
+
+  .brand {
+    min-height: 290px;
+
+    padding: 2.2rem 1.25rem;
+  }
+
+  .brand-content {
+    gap: 1rem;
+  }
+
+  .logo-backdrop {
+    width: 170px;
+    height: 170px;
+
+    border-width: 5px;
+  }
+
+  .logo {
+    width: 125px;
+    height: 100px;
+  }
+
+  .tagline {
+    font-size: 0.85rem;
+
+    max-width: 30ch;
+  }
+
+  .panel {
+    padding: 1.5rem 1rem;
+  }
+
+  .card {
+    padding: 1.6rem 1.25rem;
+
+    border-radius: 22px;
+  }
+
+  .card-header {
+    margin-bottom: 1.5rem;
+  }
+
+  .card-header h2 {
+    font-size: 1.5rem;
+  }
+
+  .card-header p {
+    font-size: 0.88rem;
+  }
+
+  button[type='button'] {
+    padding: 0.85rem 1rem;
+  }
+}
+
+
+/* =========================================================
+   PANTALLAS PEQUEÑAS
+   ========================================================= */
+
+@media (max-height: 700px) and (min-width: 481px) {
+
+  .brand {
+    padding: 2rem;
+  }
+
+  .logo-backdrop {
+    width: 200px;
+    height: 200px;
+  }
+
+  .logo {
+    width: 150px;
+    height: 110px;
+  }
+
+  .brand-content {
+    gap: 1rem;
+  }
+}
+
+
+/* =========================================================
+   REDUCIR ANIMACIONES
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .bubble,
+  .brand-content,
+  .logo-backdrop,
+  .tagline,
+  .card {
+    animation: none;
+  }
+
+  button[type='button'] {
+    transition: none;
+  }
 }
