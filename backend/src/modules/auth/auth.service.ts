@@ -8,8 +8,8 @@ const JWT_SECRET = process.env.JWT_SECRET as string;
 export const ACCESS_TOKEN_EXPIRES_IN =
   process.env.ACCESS_TOKEN_EXPIRES_IN || "15m";
 
-const SESSION_ABSOLUTE_EXPIRES_IN =
-  process.env.SESSION_ABSOLUTE_EXPIRES_IN || "1h";
+const SESSION_IDLE_TIMEOUT =
+  process.env.SESSION_IDLE_TIMEOUT || "1h";
 
 export class AuthError extends Error {
   statusCode: number;
@@ -60,7 +60,7 @@ export async function loginUser(email: string, password: string) {
   }
 
   const sessionExpiresAt = new Date(
-    Date.now() + parseDurationToMs(SESSION_ABSOLUTE_EXPIRES_IN)
+    Date.now() + parseDurationToMs(SESSION_IDLE_TIMEOUT)
   );
 
   const payload: JwtPayload = {
@@ -114,10 +114,21 @@ export async function refreshAccessToken(rawRefreshToken: string) {
     );
   }
 
+  // Sliding session: cada renovación con actividad extiende la expiración
+  // del refresh token a "ahora + tiempo de inactividad permitido".
+  const newExpiresAt = new Date(
+    Date.now() + parseDurationToMs(SESSION_IDLE_TIMEOUT)
+  );
+
+  await prisma.refreshToken.update({
+    where: { id: storedToken.id },
+    data: { expiresAt: newExpiresAt },
+  });
+
   const payload: JwtPayload = {
     id: storedToken.user.id,
     role: storedToken.user.role,
-    sessionExpiresAt: storedToken.expiresAt.toISOString(),
+    sessionExpiresAt: newExpiresAt.toISOString(),
   };
 
   const accessToken = jwt.sign(payload, JWT_SECRET, {
@@ -126,7 +137,7 @@ export async function refreshAccessToken(rawRefreshToken: string) {
 
   return {
     accessToken,
-    sessionExpiresAt: storedToken.expiresAt,
+    sessionExpiresAt: newExpiresAt,
     user: {
       id: storedToken.user.id,
       email: storedToken.user.email,
