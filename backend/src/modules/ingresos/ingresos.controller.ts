@@ -16,14 +16,28 @@ function manejarError(error: unknown, res: Response) {
   return res.status(500).json({ message: "Error interno del servidor" });
 }
 
+function queryToString(valor: unknown): string | undefined {
+  if (Array.isArray(valor)) {
+    return valor.length > 0 ? String(valor[0]) : undefined;
+  }
+  if (valor === undefined || valor === null) {
+    return undefined;
+  }
+  return String(valor);
+}
+
+function paramToString(valor: unknown): string {
+  if (Array.isArray(valor)) {
+    return String(valor[0]);
+  }
+  return String(valor);
+}
+
 export async function crear(req: Request, res: Response) {
   try {
-    const userId = req.user!.id;
+    const userId: string = req.user!.id;
     const ingreso = await crearIngreso(userId, req.body);
-    return res.status(201).json({
-      message: "Ingreso guardado correctamente",
-      ingreso,
-    });
+    return res.status(201).json({ message: "Ingreso guardado correctamente", ingreso });
   } catch (error) {
     return manejarError(error, res);
   }
@@ -31,12 +45,15 @@ export async function crear(req: Request, res: Response) {
 
 export async function listar(req: Request, res: Response) {
   try {
-    const userId = req.user!.id;
-    const { tipo, desde, hasta } = req.query;
+    const userId: string = req.user!.id;
+    const tipo = queryToString(req.query.tipo);
+    const desde = queryToString(req.query.desde);
+    const hasta = queryToString(req.query.hasta);
+
     const ingresos = await listarIngresos(userId, {
       tipo: tipo as any,
-      desde: desde as string | undefined,
-      hasta: hasta as string | undefined,
+      desde,
+      hasta,
     });
     return res.status(200).json({ ingresos });
   } catch (error) {
@@ -46,8 +63,9 @@ export async function listar(req: Request, res: Response) {
 
 export async function obtenerPorId(req: Request, res: Response) {
   try {
-    const userId = req.user!.id;
-    const ingreso = await obtenerIngresoPorId(userId, req.params.id as string);
+    const userId: string = req.user!.id;
+    const id: string = paramToString(req.params.id);
+    const ingreso = await obtenerIngresoPorId(userId, id);
     return res.status(200).json({ ingreso });
   } catch (error) {
     return manejarError(error, res);
@@ -56,12 +74,10 @@ export async function obtenerPorId(req: Request, res: Response) {
 
 export async function actualizar(req: Request, res: Response) {
   try {
-    const userId = req.user!.id;
-    const ingreso = await actualizarIngreso(userId, req.params.id as string, req.body);
-    return res.status(200).json({
-      message: "Ingreso actualizado correctamente",
-      ingreso,
-    });
+    const userId: string = req.user!.id;
+    const id: string = paramToString(req.params.id);
+    const ingreso = await actualizarIngreso(userId, id, req.body);
+    return res.status(200).json({ message: "Ingreso actualizado correctamente", ingreso });
   } catch (error) {
     return manejarError(error, res);
   }
@@ -69,8 +85,9 @@ export async function actualizar(req: Request, res: Response) {
 
 export async function eliminar(req: Request, res: Response) {
   try {
-    const userId = req.user!.id;
-    await eliminarIngreso(userId, req.params.id as string);
+    const userId: string = req.user!.id;
+    const id: string = paramToString(req.params.id);
+    await eliminarIngreso(userId, id);
     return res.status(200).json({ message: "Ingreso eliminado correctamente" });
   } catch (error) {
     return manejarError(error, res);

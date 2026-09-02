@@ -1,39 +1,24 @@
 export type TipoIngreso = 'SUELDO_FIJO' | 'SUELDO_EXTRA' | 'SUELDO_VARIADO';
 
 export type CategoriaIngreso =
-  | 'SERVICIO'
-  | 'VENTAS'
-  | 'NEGOCIO'
-  | 'SALARIO'
-  | 'INVERSIONES'
-  | 'OTROS';
+  | 'SERVICIO' | 'VENTAS' | 'NEGOCIO' | 'SALARIO' | 'INVERSIONES' | 'OTROS';
 
 export type MetodoPago =
-  | 'EFECTIVO'
-  | 'CHEQUE'
-  | 'TRANSFERENCIA'
-  | 'TARJETA'
-  | 'OTROS';
+  | 'EFECTIVO' | 'CHEQUE' | 'TRANSFERENCIA' | 'TARJETA' | 'OTROS';
 
 export type EstadoIngreso = 'PAGADO' | 'PENDIENTE' | 'PARCIAL';
 
 export type CuentaDestino =
-  | 'AHORROS'
-  | 'PAGOS'
-  | 'GASTOS_PERSONALES'
-  | 'INVERSIONES'
-  | 'CONSUMO_PERSONAL'
-  | 'CUENTAS_BANCARIAS'
-  | 'OTROS';
+  | 'AHORROS' | 'PAGOS' | 'GASTOS_PERSONALES' | 'INVERSIONES'
+  | 'CONSUMO_PERSONAL' | 'CUENTAS_BANCARIAS' | 'OTROS';
 
-/** Registro tal como lo devuelve el backend (Prisma). */
 export interface Ingreso {
   id: string;
   tipo: TipoIngreso;
   categoria: CategoriaIngreso | null;
   descripcion: string | null;
-  monto: string; // Prisma Decimal llega serializado como string en el JSON
-  fecha: string; // ISO string
+  monto: string;
+  fecha: string;
   metodoPago: MetodoPago;
   estado: EstadoIngreso | null;
   cuentaDestino: CuentaDestino;
@@ -42,7 +27,6 @@ export interface Ingreso {
   updatedAt: string;
 }
 
-/** Datos que se envían al crear/actualizar un Sueldo fijo. */
 export interface SueldoFijoInput {
   tipo: 'SUELDO_FIJO';
   monto: number;
@@ -51,7 +35,6 @@ export interface SueldoFijoInput {
   cuentaDestino: CuentaDestino;
 }
 
-/** Datos que se envían al crear/actualizar un Sueldo extra o variado. */
 export interface IngresoExtraInput {
   tipo: 'SUELDO_EXTRA' | 'SUELDO_VARIADO';
   categoria: CategoriaIngreso;
@@ -80,7 +63,6 @@ export interface FiltroIngresos {
   hasta?: string;
 }
 
-/** Listas fijas para los menús desplegables (sin escritura libre del usuario). */
 export const OPCIONES_CATEGORIA: { value: CategoriaIngreso; label: string }[] = [
   { value: 'SERVICIO', label: 'Servicio' },
   { value: 'VENTAS', label: 'Ventas' },
@@ -113,3 +95,9 @@ export const OPCIONES_CUENTA_DESTINO: { value: CuentaDestino; label: string }[] 
   { value: 'CUENTAS_BANCARIAS', label: 'Cuentas bancarias' },
   { value: 'OTROS', label: 'Otros' },
 ];
+
+export function etiquetaTipo(tipo: TipoIngreso): string {
+  if (tipo === 'SUELDO_FIJO') return 'Fijo';
+  if (tipo === 'SUELDO_EXTRA') return 'Extra';
+  return 'Variable';
+}

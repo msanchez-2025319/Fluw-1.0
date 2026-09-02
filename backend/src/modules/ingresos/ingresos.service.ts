@@ -62,11 +62,6 @@ function validarCampoRequerido(valor: unknown, campo: string): void {
   }
 }
 
-/**
- * Valida los datos según el tipo de ingreso y arma el objeto listo para Prisma.
- * SUELDO_FIJO: solo requiere monto, fecha, metodoPago, cuentaDestino.
- * SUELDO_EXTRA / SUELDO_VARIADO: requiere además categoria, descripcion y estado.
- */
 function construirDatosValidados(input: IngresoInput) {
   validarTipo(input.tipo);
 
@@ -84,15 +79,9 @@ function construirDatosValidados(input: IngresoInput) {
   };
 
   if (input.tipo === "SUELDO_FIJO") {
-    return {
-      ...base,
-      categoria: null,
-      descripcion: null,
-      estado: null,
-    };
+    return { ...base, categoria: null, descripcion: null, estado: null };
   }
 
-  // SUELDO_EXTRA o SUELDO_VARIADO
   validarCampoRequerido(input.categoria, "categoria");
   validarCampoRequerido(input.descripcion, "descripcion");
   validarCampoRequerido(input.estado, "estado");
@@ -107,13 +96,7 @@ function construirDatosValidados(input: IngresoInput) {
 
 export async function crearIngreso(userId: string, input: IngresoInput) {
   const data = construirDatosValidados(input);
-
-  return prisma.ingreso.create({
-    data: {
-      ...data,
-      userId,
-    },
-  });
+  return prisma.ingreso.create({ data: { ...data, userId } });
 }
 
 export interface FiltroIngresos {
@@ -139,38 +122,24 @@ export async function listarIngresos(userId: string, filtro: FiltroIngresos = {}
     where.fecha = rangoFecha;
   }
 
-  return prisma.ingreso.findMany({
-    where,
-    orderBy: { fecha: "desc" },
-  });
+  return prisma.ingreso.findMany({ where, orderBy: { fecha: "desc" } });
 }
 
 export async function obtenerIngresoPorId(userId: string, id: string) {
-  const ingreso = await prisma.ingreso.findFirst({
-    where: { id, userId },
-  });
-
+  const ingreso = await prisma.ingreso.findFirst({ where: { id, userId } });
   if (!ingreso) {
     throw new IngresoError("Ingreso no encontrado", 404);
   }
-
   return ingreso;
 }
 
 export async function actualizarIngreso(userId: string, id: string, input: IngresoInput) {
-  await obtenerIngresoPorId(userId, id); // valida existencia y pertenencia
+  await obtenerIngresoPorId(userId, id);
   const data = construirDatosValidados(input);
-
-  return prisma.ingreso.update({
-    where: { id },
-    data,
-  });
+  return prisma.ingreso.update({ where: { id }, data });
 }
 
 export async function eliminarIngreso(userId: string, id: string) {
-  await obtenerIngresoPorId(userId, id); // valida existencia y pertenencia
-
-  await prisma.ingreso.delete({
-    where: { id },
-  });
+  await obtenerIngresoPorId(userId, id);
+  await prisma.ingreso.delete({ where: { id } });
 }

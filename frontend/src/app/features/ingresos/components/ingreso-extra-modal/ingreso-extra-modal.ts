@@ -12,7 +12,7 @@ import {
   OPCIONES_METODO_PAGO,
   OPCIONES_ESTADO,
   OPCIONES_CUENTA_DESTINO,
-} from '../../ingresos.model';
+} from '../../models/ingreso.model';
 
 @Component({
   selector: 'app-ingreso-extra-modal',
@@ -22,7 +22,6 @@ import {
   styleUrl: './ingreso-extra-modal.css',
 })
 export class IngresoExtraModal {
-  /** Determina si se guarda como SUELDO_EXTRA o SUELDO_VARIADO. Un solo componente para ambos. */
   @Input({ required: true }) tipo!: 'SUELDO_EXTRA' | 'SUELDO_VARIADO';
 
   @Output() cerrar = new EventEmitter<void>();
@@ -47,34 +46,13 @@ export class IngresoExtraModal {
   }
 
   onGuardar(): void {
-    if (!this.categoria()) {
-      this.errorMensaje.set('Selecciona una categoría');
-      return;
-    }
-    if (!this.descripcion().trim()) {
-      this.errorMensaje.set('La descripción es obligatoria');
-      return;
-    }
-    if (!this.monto() || this.monto()! <= 0) {
-      this.errorMensaje.set('El monto es obligatorio y debe ser mayor a 0');
-      return;
-    }
-    if (!this.fecha()) {
-      this.errorMensaje.set('La fecha de ingreso es obligatoria');
-      return;
-    }
-    if (!this.metodoPago()) {
-      this.errorMensaje.set('Selecciona un método de pago');
-      return;
-    }
-    if (!this.estado()) {
-      this.errorMensaje.set('Selecciona un estado');
-      return;
-    }
-    if (!this.cuentaDestino()) {
-      this.errorMensaje.set('Selecciona una cuenta o destino');
-      return;
-    }
+    if (!this.categoria()) { this.errorMensaje.set('Selecciona una categoría'); return; }
+    if (!this.descripcion().trim()) { this.errorMensaje.set('La descripción es obligatoria'); return; }
+    if (!this.monto() || this.monto()! <= 0) { this.errorMensaje.set('El monto es obligatorio y debe ser mayor a 0'); return; }
+    if (!this.fecha()) { this.errorMensaje.set('La fecha de ingreso es obligatoria'); return; }
+    if (!this.metodoPago()) { this.errorMensaje.set('Selecciona un método de pago'); return; }
+    if (!this.estado()) { this.errorMensaje.set('Selecciona un estado'); return; }
+    if (!this.cuentaDestino()) { this.errorMensaje.set('Selecciona una cuenta o destino'); return; }
 
     this.errorMensaje.set(null);
     this.guardar.emit({
@@ -89,7 +67,5 @@ export class IngresoExtraModal {
     });
   }
 
-  onCerrar(): void {
-    this.cerrar.emit();
-  }
+  onCerrar(): void { this.cerrar.emit(); }
 }

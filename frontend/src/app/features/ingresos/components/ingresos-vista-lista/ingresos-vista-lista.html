@@ -1,0 +1,15 @@
+@if (ingresos.length === 0) {
+  <p class="empty-state">Aún no hay ingresos registrados</p>
+} @else {
+  <ul class="list-items income">
+    @for (ingreso of ingresos; track ingreso.id) {
+      <li>
+        <span>{{ etiqueta(ingreso) }}</span>
+        <span class="amount">Q{{ ingreso.monto }}</span>
+        <span class="status" [class.status-check]="pagado(ingreso)" [class.status-x]="!pagado(ingreso)">
+          {{ pagado(ingreso) ? '✓' : '✕' }}
+        </span>
+      </li>
+    }
+  </ul>
+}

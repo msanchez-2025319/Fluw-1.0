@@ -1,7 +1,4 @@
-.dropdown {
-  position: relative;
-  width: 100%;
-}
+.dropdown { position: relative; width: 100%; }
 
 .dropdown-trigger {
   width: 100%;
@@ -18,19 +15,10 @@
   cursor: pointer;
 }
 
-.dropdown-arrow {
-  transition: transform 0.15s ease;
-  font-size: 0.75rem;
-}
-.dropdown-arrow.open {
-  transform: rotate(180deg);
-}
+.dropdown-arrow { transition: transform 0.15s ease; font-size: 0.75rem; }
+.dropdown-arrow.open { transform: rotate(180deg); }
 
-.dropdown-backdrop {
-  position: fixed;
-  inset: 0;
-  z-index: 150;
-}
+.dropdown-backdrop { position: fixed; inset: 0; z-index: 150; }
 
 .dropdown-list {
   position: absolute;
@@ -60,6 +48,4 @@
   cursor: pointer;
   color: var(--text-dark, #22301F);
 }
-.dropdown-option:hover {
-  background: var(--row-income, #DCE7CF);
-}
+.dropdown-option:hover { background: var(--row-income, #DCE7CF); }

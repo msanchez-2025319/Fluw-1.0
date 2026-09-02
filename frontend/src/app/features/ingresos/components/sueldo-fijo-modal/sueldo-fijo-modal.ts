@@ -8,7 +8,7 @@ import {
   CuentaDestino,
   OPCIONES_METODO_PAGO,
   OPCIONES_CUENTA_DESTINO,
-} from '../../ingresos.model';
+} from '../../models/ingreso.model';
 
 @Component({
   selector: 'app-sueldo-fijo-modal',
@@ -31,22 +31,10 @@ export class SueldoFijoModal {
   errorMensaje = signal<string | null>(null);
 
   onGuardar(): void {
-    if (!this.monto() || this.monto()! <= 0) {
-      this.errorMensaje.set('El monto es obligatorio y debe ser mayor a 0');
-      return;
-    }
-    if (!this.fecha()) {
-      this.errorMensaje.set('La fecha de pago es obligatoria');
-      return;
-    }
-    if (!this.metodoPago()) {
-      this.errorMensaje.set('Selecciona un método de pago');
-      return;
-    }
-    if (!this.cuentaDestino()) {
-      this.errorMensaje.set('Selecciona una cuenta o destino');
-      return;
-    }
+    if (!this.monto() || this.monto()! <= 0) { this.errorMensaje.set('El monto es obligatorio y debe ser mayor a 0'); return; }
+    if (!this.fecha()) { this.errorMensaje.set('La fecha de pago es obligatoria'); return; }
+    if (!this.metodoPago()) { this.errorMensaje.set('Selecciona un método de pago'); return; }
+    if (!this.cuentaDestino()) { this.errorMensaje.set('Selecciona una cuenta o destino'); return; }
 
     this.errorMensaje.set(null);
     this.guardar.emit({
