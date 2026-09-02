@@ -480,7 +480,7 @@
   flex: 1;
 }
 .events-list li span{ text-align: center; }
-.events-list li:last-child{ }
+.events-list li:last-child{ margin-bottom: 0; }
 .event-date{ color: var(--text-muted); min-width: 90px; }
 .event-desc{ color: var(--text-dark); }
 
@@ -557,4 +557,17 @@
   .card-header h2{ padding: 8px 14px; font-size: 1rem; }
   .list-items{ padding: 12px; }
   .stat-value{ font-size: 1.2rem; }
+}
+
+/* Estado vacío / carga de la tarjeta Ingresos vista */
+.income-empty{
+  margin: 0;
+  padding: 24px 20px;
+  text-align: center;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+.income-empty-error{
+  color: var(--red-accent);
 }

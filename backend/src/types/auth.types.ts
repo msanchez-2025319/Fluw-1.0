@@ -1,6 +1,7 @@
 export interface JwtPayload {
   id: string;
   role: "ADMIN" | "USER";
+  sessionExpiresAt: string;
 }
 
 export interface LoginRequestBody {
@@ -14,9 +15,4 @@ declare global {
       user?: JwtPayload;
     }
   }
-}
-export interface JwtPayload {
-  id: string;
-  role: "ADMIN" | "USER";
-  sessionExpiresAt: string;
 }

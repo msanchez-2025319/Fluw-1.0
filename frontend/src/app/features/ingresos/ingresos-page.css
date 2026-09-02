@@ -1,0 +1,330 @@
+.ingresos-wrapper {
+  --bg-app: #9CA894;
+  --pill-orange: #D9905A;
+  --header-dark: #23482F;
+  --card-cream: #F6F1E5;
+  --card-border: #E7DFC9;
+  --row-income: #DCE7CF;
+  --green-accent: #6FCF54;
+  --red-accent: #E1483A;
+  --text-dark: #22301F;
+  --text-muted: #4c5a45;
+  --white: #ffffff;
+  --radius-card: 18px;
+  --radius-pill: 26px;
+  --shadow-soft: 0 2px 6px rgba(0, 0, 0, 0.08);
+
+  box-sizing: border-box;
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 16px 20px 32px;
+  font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: var(--bg-app);
+  color: var(--text-dark);
+  min-height: 100vh;
+}
+
+.ingresos-wrapper *,
+.ingresos-wrapper *::before,
+.ingresos-wrapper *::after {
+  box-sizing: border-box;
+}
+
+/* ===================== HEADER (mismo que dashboard) ===================== */
+.topbar {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-bottom: 22px;
+  width: 100%;
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 10px 20px;
+  box-shadow: var(--shadow-soft);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 0;
+  font-weight: 800;
+  font-size: 1.15rem;
+  color: var(--text-dark);
+}
+.brand-logo {
+  display: block;
+  height: 44px;
+  width: auto;
+  object-fit: contain;
+}
+
+.topbar-nav {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  flex: 1;
+}
+.topbar-nav .pill {
+  flex: 1 1 0;
+  justify-content: center;
+}
+
+.pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: none;
+  border-radius: var(--radius-pill);
+  padding: 12px 20px;
+  height: 50px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  background: var(--pill-orange);
+  color: #000000;
+  box-shadow: var(--shadow-soft);
+  white-space: nowrap;
+}
+
+.pill-static {
+  flex-direction: row;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+.pill-static-line {
+  font-size: 0.95rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.pill-link { position: relative; }
+.pill-icon { display: flex; }
+.pill-img {
+  width: 26px;
+  height: 26px;
+  object-fit: contain;
+}
+.chevron { font-weight: 700; margin-left: 2px; }
+
+.pill-active {
+  outline: none;
+}
+
+.topbar-user {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.user-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  border: none;
+  background: var(--pill-orange);
+  color: #000000;
+  border-radius: var(--radius-pill);
+  padding: 8px 24px;
+  height: 50px;
+  cursor: pointer;
+  box-shadow: var(--shadow-soft);
+}
+.user-block-icon { display: flex; color: #000000; gap: 8px; align-items: center; }
+.user-block-img {
+  width: 26px;
+  height: 26px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+.user-block-img-small {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+}
+.user-block .user-email {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #000000;
+}
+.icon-btn {
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: var(--shadow-soft);
+}
+.icon-btn-logout {
+  background: var(--pill-orange);
+  color: var(--white);
+  border-radius: var(--radius-pill);
+  padding: 12px 22px;
+  height: 50px;
+}
+
+.pill:hover,
+.user-block:hover,
+.icon-btn:hover,
+.icon-btn-logout:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+}
+
+/* ===================== CONTENIDO ===================== */
+.ingresos-main {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.ingresos-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.btn-action {
+  border: none;
+  border-radius: var(--radius-pill);
+  padding: 12px 28px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: var(--shadow-soft);
+  color: var(--text-dark);
+}
+
+.btn-sueldo-fijo {
+  background: var(--green-accent);
+}
+.btn-sueldo-fijo:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+.btn-mas {
+  background: var(--card-cream);
+  font-size: 1.2rem;
+  padding: 12px 24px;
+}
+.btn-mas:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+/* ===================== ESTADOS ===================== */
+.error-banner {
+  background: #f8d7da;
+  color: #721c24;
+  border-radius: 12px;
+  padding: 12px 20px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.loading-text {
+  text-align: center;
+  color: var(--text-muted);
+  font-weight: 600;
+  padding: 40px 0;
+  margin: 0;
+}
+
+.empty-state {
+  background: var(--card-cream);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-card);
+  padding: 40px 20px;
+  text-align: center;
+}
+.empty-state p {
+  margin: 0;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+/* ===================== LISTA DE INGRESOS ===================== */
+.ingresos-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.ingreso-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: var(--row-income);
+  border-radius: 14px;
+  padding: 14px 18px;
+  font-weight: 600;
+}
+
+.ingreso-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+}
+
+.ingreso-tipo {
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: var(--header-dark);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.ingreso-desc {
+  font-size: 0.92rem;
+  color: var(--text-dark);
+}
+
+.ingreso-meta {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.ingreso-monto {
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--text-dark);
+  white-space: nowrap;
+}
+
+.btn-delete {
+  background: transparent;
+  border: none;
+  font-size: 1.3rem;
+  color: var(--red-accent);
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 8px;
+  line-height: 1;
+}
+.btn-delete:hover {
+  background: rgba(225, 72, 58, 0.12);
+}
+
+/* ===================== RESPONSIVE ===================== */
+@media (max-width: 768px) {
+  .topbar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+  .topbar-nav {
+    flex-direction: column;
+    width: 100%;
+  }
+  .topbar-nav .pill { flex: 1 1 auto; width: 100%; }
+  .topbar-user {
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .ingresos-wrapper { padding: 12px; }
+  .ingreso-row { flex-wrap: wrap; }
+}

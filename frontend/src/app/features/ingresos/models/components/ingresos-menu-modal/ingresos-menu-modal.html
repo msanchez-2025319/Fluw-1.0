@@ -1,0 +1,17 @@
+<div class="modal-overlay" (click)="onCerrar()">
+  <div class="modal-box" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>Ingresos</h2>
+      <button type="button" class="modal-close" (click)="onCerrar()">&times;</button>
+    </div>
+
+    <div class="modal-body">
+      <button type="button" class="menu-option" (click)="onSeleccionar('SUELDO_EXTRA')">
+        Ingresos extras <span class="chevron">&gt;</span>
+      </button>
+      <button type="button" class="menu-option" (click)="onSeleccionar('SUELDO_VARIADO')">
+        Ingresos variables <span class="chevron">&gt;</span>
+      </button>
+    </div>
+  </div>
+</div>
