@@ -2,7 +2,9 @@
   <div class="modal-box" (click)="$event.stopPropagation()">
     <div class="modal-header">
       <h2>Ingresos vista</h2>
-      <button type="button" class="modal-close" (click)="onCerrar()">&times;</button>
+      <button type="button" class="modal-close" (click)="onCerrar()">
+        <img src="/images/cancel.png" alt="Cerrar" class="modal-close-img">
+      </button>
     </div>
 
     <div class="table-wrapper">
@@ -21,13 +23,13 @@
               <th>Categoría</th>
               <th>Estado</th>
               <th>Tipo</th>
-              <th></th>
+              <th>Editar</th>
             </tr>
           </thead>
           <tbody>
             @for (ingreso of ingresos; track ingreso.id) {
               <tr>
-                <td>{{ ingreso.id.substring(0, 6) }}</td>
+                <td class="id-cell">{{ ingreso.id }}</td>
                 <td>{{ fechaFormateada(ingreso.fecha) }}</td>
                 <td>{{ descripcionMostrada(ingreso) }}</td>
                 <td>Q{{ ingreso.monto }}</td>
@@ -37,7 +39,9 @@
                 <td>{{ ingreso.estado || 'Pagado' }}</td>
                 <td>{{ etiquetaTipo(ingreso.tipo) }}</td>
                 <td>
-                  <button type="button" class="btn-editar" (click)="onEditar(ingreso.id)">✎</button>
+                  <button type="button" class="row-editar" (click)="onEditar(ingreso.id)">
+                    <img src="/images/editar.png" alt="Editar" class="row-editar-img">
+                  </button>
                 </td>
               </tr>
             }

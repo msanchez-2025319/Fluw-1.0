@@ -2,19 +2,11 @@ import { Component, EventEmitter, Input, OnInit, Output, signal } from '@angular
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
-import { DropdownSelect } from '../dropdown-select/dropdown-select';
+import { DropdownSelect } from '../../../../services/components/dropdown-select/dropdown-select';
 import { IngresosService } from '../../../../services/ingresos.service';
 import {
-  Ingreso,
-  IngresoInput,
-  CategoriaIngreso,
-  MetodoPago,
-  EstadoIngreso,
-  CuentaDestino,
-  OPCIONES_CATEGORIA,
-  OPCIONES_METODO_PAGO,
-  OPCIONES_ESTADO,
-  OPCIONES_CUENTA_DESTINO,
+  Ingreso, IngresoInput, CategoriaIngreso, MetodoPago, EstadoIngreso, CuentaDestino,
+  OPCIONES_CATEGORIA, OPCIONES_METODO_PAGO, OPCIONES_ESTADO, OPCIONES_CUENTA_DESTINO,
 } from '../../models/ingreso.model';
 
 @Component({
@@ -39,7 +31,9 @@ export class IngresoEditarModal implements OnInit {
   idBusqueda = signal<string>('');
   ingresoCargado = signal<Ingreso | null>(null);
   cargando = signal(false);
+  guardando = signal(false);
   errorMensaje = signal<string | null>(null);
+  mensajeExito = signal<string | null>(null);
   confirmandoEliminar = signal(false);
 
   categoria = signal<CategoriaIngreso | null>(null);
@@ -67,6 +61,7 @@ export class IngresoEditarModal implements OnInit {
     }
     this.cargando.set(true);
     this.errorMensaje.set(null);
+    this.mensajeExito.set(null);
 
     this.ingresosService.obtenerPorId(id).subscribe({
       next: ({ ingreso }: { ingreso: Ingreso }) => {
@@ -81,7 +76,8 @@ export class IngresoEditarModal implements OnInit {
         this.cargando.set(false);
       },
       error: (err: HttpErrorResponse) => {
-        this.errorMensaje.set(err?.error?.message || 'No se encontró el ingreso');
+        console.error('[ingreso-editar-modal] Error al buscar:', err);
+        this.errorMensaje.set(err?.error?.message || `No se encontró el ingreso (HTTP ${err.status})`);
         this.ingresoCargado.set(null);
         this.cargando.set(false);
       },
@@ -94,7 +90,10 @@ export class IngresoEditarModal implements OnInit {
 
   onGuardar(): void {
     const actual = this.ingresoCargado();
-    if (!actual) return;
+    if (!actual) {
+      this.errorMensaje.set('Primero busca un ingreso por su ID');
+      return;
+    }
 
     if (!this.monto() || this.monto()! <= 0) { this.errorMensaje.set('El monto debe ser mayor a 0'); return; }
     if (!this.fecha()) { this.errorMensaje.set('La fecha es obligatoria'); return; }
@@ -129,19 +128,26 @@ export class IngresoEditarModal implements OnInit {
     }
 
     this.errorMensaje.set(null);
+    this.mensajeExito.set(null);
+    this.guardando.set(true);
+
     this.ingresosService.actualizar(actual.id, input).subscribe({
-      next: ({ ingreso }: { ingreso: Ingreso; message: string }) => this.actualizado.emit(ingreso),
-      error: (err: HttpErrorResponse) => this.errorMensaje.set(err?.error?.message || 'Error al actualizar'),
+      next: ({ ingreso }: { ingreso: Ingreso; message: string }) => {
+        this.guardando.set(false);
+        this.mensajeExito.set('Ingreso actualizado correctamente');
+        this.actualizado.emit(ingreso);
+        setTimeout(() => this.cerrar.emit(), 800);
+      },
+      error: (err: HttpErrorResponse) => {
+        console.error('[ingreso-editar-modal] Error al actualizar:', err);
+        this.guardando.set(false);
+        this.errorMensaje.set(err?.error?.message || `Error al actualizar (HTTP ${err.status})`);
+      },
     });
   }
 
-  onEliminarClick(): void {
-    this.confirmandoEliminar.set(true);
-  }
-
-  onCancelarEliminar(): void {
-    this.confirmandoEliminar.set(false);
-  }
+  onEliminarClick(): void { this.confirmandoEliminar.set(true); }
+  onCancelarEliminar(): void { this.confirmandoEliminar.set(false); }
 
   onConfirmarEliminar(): void {
     const actual = this.ingresoCargado();
@@ -149,11 +155,12 @@ export class IngresoEditarModal implements OnInit {
 
     this.ingresosService.eliminar(actual.id).subscribe({
       next: () => this.eliminado.emit(actual.id),
-      error: (err: HttpErrorResponse) => this.errorMensaje.set(err?.error?.message || 'Error al eliminar'),
+      error: (err: HttpErrorResponse) => {
+        console.error('[ingreso-editar-modal] Error al eliminar:', err);
+        this.errorMensaje.set(err?.error?.message || `Error al eliminar (HTTP ${err.status})`);
+      },
     });
   }
 
-  onCerrar(): void {
-    this.cerrar.emit();
-  }
+  onCerrar(): void { this.cerrar.emit(); }
 }

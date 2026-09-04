@@ -28,4 +28,5 @@ export class IngresosTablaModal {
 
   onCerrar(): void { this.cerrar.emit(); }
   onEditar(id: string): void { this.editar.emit(id); }
+  editarManual(): void { this.editar.emit(''); }
 }

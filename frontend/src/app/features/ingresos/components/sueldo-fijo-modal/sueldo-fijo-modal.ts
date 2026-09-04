@@ -1,13 +1,10 @@
 import { Component, EventEmitter, Output, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { DropdownSelect } from '../dropdown-select/dropdown-select';
+import { DropdownSelect } from '../../../../services/components/dropdown-select/dropdown-select';
 import {
-  SueldoFijoInput,
-  MetodoPago,
-  CuentaDestino,
-  OPCIONES_METODO_PAGO,
-  OPCIONES_CUENTA_DESTINO,
+  SueldoFijoInput, MetodoPago, CuentaDestino,
+  OPCIONES_METODO_PAGO, OPCIONES_CUENTA_DESTINO,
 } from '../../models/ingreso.model';
 
 @Component({
@@ -32,10 +29,9 @@ export class SueldoFijoModal {
 
   onGuardar(): void {
     if (!this.monto() || this.monto()! <= 0) { this.errorMensaje.set('El monto es obligatorio y debe ser mayor a 0'); return; }
-    if (!this.fecha()) { this.errorMensaje.set('La fecha de pago es obligatoria'); return; }
+    if (!this.fecha()) { this.errorMensaje.set('La fecha es obligatoria'); return; }
     if (!this.metodoPago()) { this.errorMensaje.set('Selecciona un método de pago'); return; }
     if (!this.cuentaDestino()) { this.errorMensaje.set('Selecciona una cuenta o destino'); return; }
-
     this.errorMensaje.set(null);
     this.guardar.emit({
       tipo: 'SUELDO_FIJO',
@@ -46,7 +42,5 @@ export class SueldoFijoModal {
     });
   }
 
-  onCerrar(): void {
-    this.cerrar.emit();
-  }
+  onCerrar(): void { this.cerrar.emit(); }
 }

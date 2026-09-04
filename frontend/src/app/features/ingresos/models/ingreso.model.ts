@@ -1,13 +1,7 @@
-﻿export type TipoIngreso = 'SUELDO_FIJO' | 'SUELDO_EXTRA' | 'SUELDO_VARIADO';
-
-export type CategoriaIngreso =
-  | 'SERVICIO' | 'VENTAS' | 'NEGOCIO' | 'SALARIO' | 'INVERSIONES' | 'OTROS';
-
-export type MetodoPago =
-  | 'EFECTIVO' | 'CHEQUE' | 'TRANSFERENCIA' | 'TARJETA' | 'OTROS';
-
+export type TipoIngreso = 'SUELDO_FIJO' | 'SUELDO_EXTRA' | 'SUELDO_VARIADO';
+export type CategoriaIngreso = 'SALARIO' | 'SERVICIOS' | 'VENTAS' | 'OTROS_INGRESOS';
+export type MetodoPago = 'TARJETA' | 'EFECTIVO' | 'TRANSFERENCIA' | 'CHEQUE';
 export type EstadoIngreso = 'PAGADO' | 'PENDIENTE' | 'PARCIAL';
-
 export type CuentaDestino =
   | 'AHORROS' | 'PAGOS' | 'GASTOS_PERSONALES' | 'INVERSIONES'
   | 'CONSUMO_PERSONAL' | 'CUENTAS_BANCARIAS' | 'OTROS';
@@ -64,20 +58,17 @@ export interface FiltroIngresos {
 }
 
 export const OPCIONES_CATEGORIA: { value: CategoriaIngreso; label: string }[] = [
-  { value: 'SERVICIO', label: 'Servicio' },
-  { value: 'VENTAS', label: 'Ventas' },
-  { value: 'NEGOCIO', label: 'Negocio' },
   { value: 'SALARIO', label: 'Salario' },
-  { value: 'INVERSIONES', label: 'Inversiones' },
-  { value: 'OTROS', label: 'Otros' },
+  { value: 'SERVICIOS', label: 'Servicios' },
+  { value: 'VENTAS', label: 'Ventas' },
+  { value: 'OTROS_INGRESOS', label: 'Otros ingresos' },
 ];
 
 export const OPCIONES_METODO_PAGO: { value: MetodoPago; label: string }[] = [
-  { value: 'EFECTIVO', label: 'Efectivo' },
-  { value: 'CHEQUE', label: 'Cheque' },
-  { value: 'TRANSFERENCIA', label: 'Transferencia' },
   { value: 'TARJETA', label: 'Tarjeta' },
-  { value: 'OTROS', label: 'Otros' },
+  { value: 'EFECTIVO', label: 'Efectivo' },
+  { value: 'TRANSFERENCIA', label: 'Transferencia' },
+  { value: 'CHEQUE', label: 'Cheque' },
 ];
 
 export const OPCIONES_ESTADO: { value: EstadoIngreso; label: string }[] = [

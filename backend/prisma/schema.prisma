@@ -62,20 +62,17 @@ enum TipoIngreso {
 }
 
 enum CategoriaIngreso {
-  SERVICIO
-  VENTAS
-  NEGOCIO
   SALARIO
-  INVERSIONES
-  OTROS
+  SERVICIOS
+  VENTAS
+  OTROS_INGRESOS
 }
 
 enum MetodoPago {
-  EFECTIVO
-  CHEQUE
-  TRANSFERENCIA
   TARJETA
-  OTROS
+  EFECTIVO
+  TRANSFERENCIA
+  CHEQUE
 }
 
 enum EstadoIngreso {

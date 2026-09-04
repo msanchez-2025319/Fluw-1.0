@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Ingreso } from '../../models/ingreso.model';
 
@@ -11,13 +11,14 @@ import { Ingreso } from '../../models/ingreso.model';
 })
 export class IngresosVistaLista {
   @Input() ingresos: Ingreso[] = [];
+  @Output() eliminado = new EventEmitter<string>();
 
   etiqueta(ingreso: Ingreso): string {
     if (ingreso.tipo === 'SUELDO_FIJO') return 'Sueldo fijo';
     return ingreso.descripcion || 'Ingreso';
   }
 
-  pagado(ingreso: Ingreso): boolean {
-    return ingreso.tipo === 'SUELDO_FIJO' || ingreso.estado === 'PAGADO';
+  eliminarIngreso(id: string): void {
+    this.eliminado.emit(id);
   }
 }

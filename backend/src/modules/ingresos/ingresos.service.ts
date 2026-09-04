@@ -9,7 +9,6 @@ import type {
 
 export class IngresoError extends Error {
   statusCode: number;
-
   constructor(message: string, statusCode = 400) {
     super(message);
     this.statusCode = statusCode;
@@ -31,9 +30,7 @@ export interface IngresoInput {
 
 function validarTipo(tipo: unknown): asserts tipo is TipoIngreso {
   if (!tipo || !TIPOS_VALIDOS.includes(tipo as string)) {
-    throw new IngresoError(
-      `El campo "tipo" es obligatorio y debe ser uno de: ${TIPOS_VALIDOS.join(", ")}`
-    );
+    throw new IngresoError(`El campo "tipo" es obligatorio y debe ser uno de: ${TIPOS_VALIDOS.join(", ")}`);
   }
 }
 
@@ -64,7 +61,6 @@ function validarCampoRequerido(valor: unknown, campo: string): void {
 
 function construirDatosValidados(input: IngresoInput) {
   validarTipo(input.tipo);
-
   const monto = validarMonto(input.monto);
   const fecha = validarFecha(input.fecha);
   validarCampoRequerido(input.metodoPago, "metodoPago");
@@ -126,6 +122,9 @@ export async function listarIngresos(userId: string, filtro: FiltroIngresos = {}
 }
 
 export async function obtenerIngresoPorId(userId: string, id: string) {
+  if (!id || typeof id !== "string" || id.trim() === "") {
+    throw new IngresoError("El ID del ingreso es obligatorio", 400);
+  }
   const ingreso = await prisma.ingreso.findFirst({ where: { id, userId } });
   if (!ingreso) {
     throw new IngresoError("Ingreso no encontrado", 404);

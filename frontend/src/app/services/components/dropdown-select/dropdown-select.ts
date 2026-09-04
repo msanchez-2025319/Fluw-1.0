@@ -1,10 +1,7 @@
 import { Component, EventEmitter, Input, Output, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-export interface DropdownOption {
-  value: string;
-  label: string;
-}
+export interface DropdownOption { value: string; label: string; }
 
 @Component({
   selector: 'app-dropdown-select',
@@ -26,16 +23,7 @@ export class DropdownSelect {
     return found ? found.label : this.label;
   }
 
-  toggle(): void {
-    this.isOpen.update((open) => !open);
-  }
-
-  select(option: DropdownOption): void {
-    this.valueChange.emit(option.value);
-    this.isOpen.set(false);
-  }
-
-  close(): void {
-    this.isOpen.set(false);
-  }
+  toggle(): void { this.isOpen.update((open) => !open); }
+  select(option: DropdownOption): void { this.valueChange.emit(option.value); this.isOpen.set(false); }
+  close(): void { this.isOpen.set(false); }
 }

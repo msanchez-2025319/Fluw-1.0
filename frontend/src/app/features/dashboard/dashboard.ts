@@ -1,9 +1,9 @@
 import { Component, OnInit, inject, signal, computed } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
-import { AuthService, MeResponse } from '../../services/auth.service';
+import { AuthService } from '../../services/auth.service';
 import { IngresosService } from '../../services/ingresos.service';
-import { Ingreso, IngresoInput, SueldoFijoInput, IngresoExtraInput } from '../ingresos/models/ingreso.model';
+import { Ingreso, SueldoFijoInput, IngresoExtraInput } from '../ingresos/models/ingreso.model';
 
 import { SueldoFijoModal } from '../ingresos/components/sueldo-fijo-modal/sueldo-fijo-modal';
 import { IngresosMenuModal, OpcionIngresoMenu } from '../ingresos/components/ingresos-menu-modal/ingresos-menu-modal';
@@ -16,26 +16,28 @@ import { IngresosTablaModal } from '../ingresos/components/ingresos-tabla-modal/
   selector: 'app-dashboard',
   standalone: true,
   imports: [
-    SueldoFijoModal,
-    IngresosMenuModal,
-    IngresoExtraModal,
-    IngresoEditarModal,
-    IngresosVistaLista,
-    IngresosTablaModal,
+    SueldoFijoModal, IngresosMenuModal, IngresoExtraModal,
+    IngresoEditarModal, IngresosVistaLista, IngresosTablaModal,
   ],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css',
 })
 export class Dashboard implements OnInit {
-
   private authService = inject(AuthService);
   private ingresosService = inject(IngresosService);
   private router = inject(Router);
 
-  user = signal<MeResponse | null>(null);
+  user = this.authService.currentUser;
   ingresos = signal<Ingreso[]>([]);
 
   ultimosIngresos = computed(() => this.ingresos().slice(0, 5));
+
+  /** Corrige el bug: el pill de Sueldo Fijo ahora lee el monto real desde la base de datos. */
+  sueldoFijoTexto = computed(() => {
+    const registro = this.ingresos().find((i) => i.tipo === 'SUELDO_FIJO');
+    if (!registro) return 'Q0.00';
+    return `Q${Number(registro.monto).toFixed(2)}`;
+  });
 
   mostrarSueldoFijo = signal(false);
   mostrarIngresosMenu = signal(false);
@@ -46,17 +48,13 @@ export class Dashboard implements OnInit {
   idParaEditar = signal<string | null>(null);
 
   ngOnInit(): void {
-    this.authService.getMe().subscribe({
-      next: (user: MeResponse) => this.user.set(user),
-      error: () => this.router.navigateByUrl('/session-expired'),
-    });
     this.cargarIngresos();
   }
 
   cargarIngresos(): void {
     this.ingresosService.listar().subscribe({
       next: (res: { ingresos: Ingreso[] }) => this.ingresos.set(res.ingresos),
-      error: (err: HttpErrorResponse) => console.error('Error al cargar ingresos', err),
+      error: (err: HttpErrorResponse) => console.error('[dashboard] Error al cargar ingresos:', err),
     });
   }
 
@@ -67,21 +65,16 @@ export class Dashboard implements OnInit {
     });
   }
 
-  // --- Sueldo fijo ---
   abrirSueldoFijo(): void { this.mostrarSueldoFijo.set(true); }
   cerrarSueldoFijo(): void { this.mostrarSueldoFijo.set(false); }
 
   guardarSueldoFijo(input: SueldoFijoInput): void {
     this.ingresosService.crear(input).subscribe({
-      next: () => {
-        this.cargarIngresos();
-        this.mostrarSueldoFijo.set(false);
-      },
-      error: (err: HttpErrorResponse) => console.error('Error al guardar sueldo fijo', err),
+      next: () => { this.cargarIngresos(); this.mostrarSueldoFijo.set(false); },
+      error: (err: HttpErrorResponse) => console.error('[dashboard] Error al guardar sueldo fijo:', err),
     });
   }
 
-  // --- Menú Ingresos (extras / variables) ---
   abrirIngresosMenu(): void { this.mostrarIngresosMenu.set(true); }
   cerrarIngresosMenu(): void { this.mostrarIngresosMenu.set(false); }
 
@@ -95,15 +88,11 @@ export class Dashboard implements OnInit {
 
   guardarIngresoExtra(input: IngresoExtraInput): void {
     this.ingresosService.crear(input).subscribe({
-      next: () => {
-        this.cargarIngresos();
-        this.mostrarIngresoExtra.set(false);
-      },
-      error: (err: HttpErrorResponse) => console.error('Error al guardar ingreso extra', err),
+      next: () => { this.cargarIngresos(); this.mostrarIngresoExtra.set(false); },
+      error: (err: HttpErrorResponse) => console.error('[dashboard] Error al guardar ingreso extra:', err),
     });
   }
 
-  // --- Tabla completa ---
   abrirTablaCompleta(): void { this.mostrarTablaCompleta.set(true); }
   cerrarTablaCompleta(): void { this.mostrarTablaCompleta.set(false); }
 
@@ -113,19 +102,17 @@ export class Dashboard implements OnInit {
     this.mostrarEditar.set(true);
   }
 
-  // --- Editar / eliminar ---
+  /** Botón lápiz (✎) del header "Ingresos vista": abre el modal de edición vacío, para escribir el ID manualmente. */
+  abrirEditarManual(): void {
+    this.idParaEditar.set(null);
+    this.mostrarEditar.set(true);
+  }
+
   cerrarEditar(): void {
     this.mostrarEditar.set(false);
     this.idParaEditar.set(null);
   }
 
-  onIngresoActualizado(): void {
-    this.cargarIngresos();
-    this.cerrarEditar();
-  }
-
-  onIngresoEliminado(): void {
-    this.cargarIngresos();
-    this.cerrarEditar();
-  }
+  onIngresoActualizado(): void { this.cargarIngresos(); this.cerrarEditar(); }
+  onIngresoEliminado(): void { this.cargarIngresos(); this.cerrarEditar(); }
 }

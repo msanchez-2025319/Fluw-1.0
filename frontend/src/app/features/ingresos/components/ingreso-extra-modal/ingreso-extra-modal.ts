@@ -1,17 +1,10 @@
 import { Component, EventEmitter, Input, Output, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { DropdownSelect } from '../dropdown-select/dropdown-select';
+import { DropdownSelect } from '../../../../services/components/dropdown-select/dropdown-select';
 import {
-  IngresoExtraInput,
-  CategoriaIngreso,
-  MetodoPago,
-  EstadoIngreso,
-  CuentaDestino,
-  OPCIONES_CATEGORIA,
-  OPCIONES_METODO_PAGO,
-  OPCIONES_ESTADO,
-  OPCIONES_CUENTA_DESTINO,
+  IngresoExtraInput, CategoriaIngreso, MetodoPago, EstadoIngreso, CuentaDestino,
+  OPCIONES_CATEGORIA, OPCIONES_METODO_PAGO, OPCIONES_ESTADO, OPCIONES_CUENTA_DESTINO,
 } from '../../models/ingreso.model';
 
 @Component({
@@ -23,7 +16,6 @@ import {
 })
 export class IngresoExtraModal {
   @Input({ required: true }) tipo!: 'SUELDO_EXTRA' | 'SUELDO_VARIADO';
-
   @Output() cerrar = new EventEmitter<void>();
   @Output() guardar = new EventEmitter<IngresoExtraInput>();
 
@@ -41,9 +33,7 @@ export class IngresoExtraModal {
   cuentaDestino = signal<CuentaDestino | null>(null);
   errorMensaje = signal<string | null>(null);
 
-  get titulo(): string {
-    return this.tipo === 'SUELDO_EXTRA' ? 'Ingreso extra' : 'Ingreso variable';
-  }
+  get titulo(): string { return this.tipo === 'SUELDO_EXTRA' ? 'Ingreso extra' : 'Ingreso variable'; }
 
   onGuardar(): void {
     if (!this.categoria()) { this.errorMensaje.set('Selecciona una categoría'); return; }
@@ -53,17 +43,11 @@ export class IngresoExtraModal {
     if (!this.metodoPago()) { this.errorMensaje.set('Selecciona un método de pago'); return; }
     if (!this.estado()) { this.errorMensaje.set('Selecciona un estado'); return; }
     if (!this.cuentaDestino()) { this.errorMensaje.set('Selecciona una cuenta o destino'); return; }
-
     this.errorMensaje.set(null);
     this.guardar.emit({
-      tipo: this.tipo,
-      categoria: this.categoria()!,
-      descripcion: this.descripcion().trim(),
-      monto: this.monto()!,
-      fecha: this.fecha(),
-      metodoPago: this.metodoPago()!,
-      estado: this.estado()!,
-      cuentaDestino: this.cuentaDestino()!,
+      tipo: this.tipo, categoria: this.categoria()!, descripcion: this.descripcion().trim(),
+      monto: this.monto()!, fecha: this.fecha(), metodoPago: this.metodoPago()!,
+      estado: this.estado()!, cuentaDestino: this.cuentaDestino()!,
     });
   }
 
